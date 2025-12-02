@@ -28,28 +28,28 @@ class TodayHoraChart extends StatelessWidget {
       padding: const EdgeInsetsDirectional.fromSTEB(5, 5, 16, 10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: 40,
-              height: 125,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: yLabels.map((v) {
-                  return Text(
-                    v.toString(),
-                    style: Theme.of(context).textTheme.bodySmall,
-                    textAlign: TextAlign.right,
-                  );
-                }).toList(),
-              ),
+        children: [
+          SizedBox(
+            width: 40,
+            height: 125,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: yLabels.map((v) {
+                return Text(
+                  v.toString(),
+                  style: Theme.of(context).textTheme.bodySmall,
+                  textAlign: TextAlign.right,
+                );
+              }).toList(),
             ),
+          ),
 
           Expanded(
             child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: SizedBox(
-              width: totalWidth,
-              height: 190,
+              scrollDirection: Axis.horizontal,
+              child: SizedBox(
+                width: totalWidth,
+                height: 190,
                 child: BarChart(
                   BarChartData(
                     alignment: BarChartAlignment.spaceAround,
@@ -62,7 +62,7 @@ class TodayHoraChart extends StatelessWidget {
                       drawHorizontalLine: true,
                       drawVerticalLine: false,
                       horizontalInterval: interval,
-                      verticalInterval: 2/24,
+                      verticalInterval: 2 / 24,
                       getDrawingHorizontalLine: (value) => const FlLine(
                         color: Colors.grey,
                         strokeWidth: 1,
@@ -96,22 +96,22 @@ class TodayHoraChart extends StatelessWidget {
                       ),
                       leftTitles: const AxisTitles(
                         sideTitles: SideTitles(
-                          showTitles: false
-                        //   showTitles: true,
-                        //   interval: interval,
-                        //   getTitlesWidget: (value, meta) {
-                        //     if (value % interval != 0 || value.toInt() % 2 != 0) {
-                        //       return const SizedBox.shrink();
-                        //     }
-                        //     return Padding(
-                        //       padding: const EdgeInsetsGeometry.directional(end: 5),
-                        //       child: Text(
-                        //         value.toInt().toString(),
-                        //         style: Theme.of(context).textTheme.bodySmall,
-                        //         textAlign: TextAlign.right,
-                        //       )
-                        //     );
-                        //   },
+                          showTitles: false,
+                          //   showTitles: true,
+                          //   interval: interval,
+                          //   getTitlesWidget: (value, meta) {
+                          //     if (value % interval != 0 || value.toInt() % 2 != 0) {
+                          //       return const SizedBox.shrink();
+                          //     }
+                          //     return Padding(
+                          //       padding: const EdgeInsetsGeometry.directional(end: 5),
+                          //       child: Text(
+                          //         value.toInt().toString(),
+                          //         style: Theme.of(context).textTheme.bodySmall,
+                          //         textAlign: TextAlign.right,
+                          //       )
+                          //     );
+                          //   },
                         ),
                       ),
                     ),
@@ -121,7 +121,7 @@ class TodayHoraChart extends StatelessWidget {
                         fitInsideHorizontally: true,
                         fitInsideVertically: true,
                         tooltipMargin: 8,
-                        tooltipRoundedRadius: 8,
+                        tooltipBorderRadius: .circular(8),
                         getTooltipItem: (group, groupIndex, rod, rodIndex) {
                           final topValue = h[group.x.toInt()][0].toDouble();
                           final bottomValue = h[group.x.toInt()][1].toDouble();
@@ -139,16 +139,20 @@ class TodayHoraChart extends StatelessWidget {
                     ),
                   ),
                 ),
-              )
-            )
-          )
-        ]
-      )
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
   List<BarChartRodStackItem> generateStackItemsWithGradient(
-      double from, double to, Color startColor, Color endColor) {
+    double from,
+    double to,
+    Color startColor,
+    Color endColor,
+  ) {
     List<BarChartRodStackItem> items = [];
 
     int steps = 100;
@@ -207,7 +211,7 @@ class TodayHoraChart extends StatelessWidget {
               top: topValue > 0 ? const Radius.circular(10) : Radius.zero,
               bottom: bottomValue < 0 ? const Radius.circular(10) : Radius.zero,
             ),
-          )
+          ),
         ],
       );
     });

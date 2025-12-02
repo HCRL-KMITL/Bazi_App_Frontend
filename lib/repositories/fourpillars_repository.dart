@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:bazi_app_frontend/models/bazichart_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -15,12 +16,13 @@ class FourPillarsRepository {
       headers: {"Content-Type": "application/json"},
       body: payload,
     );
-    print(response.body);
+    log(response.body);
     if (response.statusCode != 200) {
       throw Exception('${response.statusCode}: ${response.body}');
     } else {
-      final Map<String, dynamic> baziChartJson =
-          jsonDecode(utf8.decode(response.bodyBytes));
+      final Map<String, dynamic> baziChartJson = jsonDecode(
+        utf8.decode(response.bodyBytes),
+      );
       return BaziChart.fromJson(baziChartJson["four_pillars"]);
     }
   }

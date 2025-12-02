@@ -1,11 +1,9 @@
-import 'package:bazi_app_frontend/configs/theme.dart';
 import 'package:bazi_app_frontend/models/user_model.dart';
 import 'package:bazi_app_frontend/repositories/misc_repository.dart';
 import 'package:bazi_app_frontend/screens/guesthora_screen.dart';
 import 'package:bazi_app_frontend/widgets/my_element_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../repositories/hora_repository.dart';
 import '../widgets.dart';
 import 'edit_info_widget.dart';
 
@@ -73,9 +71,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => EditInfoWidget(
-                            oldData: widget.userData,
-                          ),
+                          builder: (context) =>
+                              EditInfoWidget(oldData: widget.userData),
                         ),
                       );
                     },
@@ -86,11 +83,11 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                         const SizedBox(width: 6),
                         Text(
                           "แก้ไขข้อมูล",
-                          style:
-                              Theme.of(context).textTheme.bodySmall!.copyWith(
-                                    color: Colors.black,
-                                    decoration: TextDecoration.underline,
-                                  ),
+                          style: Theme.of(context).textTheme.bodySmall!
+                              .copyWith(
+                                color: Colors.black,
+                                decoration: TextDecoration.underline,
+                              ),
                         ),
                       ],
                     ),
@@ -100,15 +97,15 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                   alignment: Alignment.topCenter,
                   child: Padding(
                     padding: const EdgeInsets.only(top: 10),
-                    child: Text("ข้อมูลส่วนตัว",
-                        style: Theme.of(context).textTheme.headlineLarge),
+                    child: Text(
+                      "ข้อมูลส่วนตัว",
+                      style: Theme.of(context).textTheme.headlineLarge,
+                    ),
                   ),
-                )
+                ),
               ],
             ),
-            const SizedBox(
-              height: 5,
-            ),
+            const SizedBox(height: 5),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
               decoration: BoxDecoration(
@@ -120,10 +117,9 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 children: [
                   Text(
                     widget.userData.name,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall
-                        ?.copyWith(color: Colors.white),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.headlineSmall?.copyWith(color: Colors.white),
                   ),
                   const SizedBox(width: 5),
                   Icon(
@@ -136,105 +132,103 @@ class _ProfileWidgetState extends State<ProfileWidget> {
             const SizedBox(height: 15),
             Text(
               widget.userData.email,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(color: Theme.of(context).primaryColor),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).primaryColor,
+              ),
               softWrap: true,
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 15),
             Container(
-                decoration: BoxDecoration(
-                    color: const Color(0x12000000),
-                    border: Border.all(
-                        color: Theme.of(context).primaryColor, width: 2),
-                    borderRadius: BorderRadius.circular(12)),
-                height: 400,
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  spacing: 10,
-                  children: [
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              decoration: BoxDecoration(
+                color: const Color(0x12000000),
+                border: Border.all(
+                  color: Theme.of(context).primaryColor,
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              height: 400,
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                spacing: 10,
+                children: [
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
                       const Icon(Icons.cake),
-                      const SizedBox(
-                        width: 10,
-                      ),
+                      const SizedBox(width: 10),
                       Text(
-                          "${MiscRepository().displayThaiDate(widget.userData.birthDate.split(" ")[0])}",
-                          style: Theme.of(context).textTheme.bodyMedium),
-                      const SizedBox(
-                        width: 10,
+                        MiscRepository().displayThaiDate(
+                          widget.userData.birthDate.split(" ")[0],
+                        ),
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
+                      const SizedBox(width: 10),
                       const Icon(Icons.schedule),
-                      const SizedBox(
-                        width: 10,
-                      ),
+                      const SizedBox(width: 10),
                       Text(
                         "${widget.userData.birthDate.split(" ")[1].substring(0, 5)} น.",
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
-                    ]),
-                    const SizedBox(
-                      height: 10,
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "การทำนายด้วยศาสตร์ บาจื้อ",
+                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                      decoration: TextDecoration.underline,
+                      color: Theme.of(context).primaryColor,
+                      decorationColor: Theme.of(context).primaryColor,
                     ),
-                    Text(
-                      "การทำนายด้วยศาสตร์ บาจื้อ",
-                      style:
-                          Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                decoration: TextDecoration.underline,
-                                color: Theme.of(context).primaryColor,
-                                decorationColor: Theme.of(context).primaryColor,
-                              ),
+                  ),
+                  TopCircleOnly(chart: widget.userData.baziChart),
+                  Center(
+                    child: personalElementText(
+                      context,
+                      widget.userData.baziChart.dayPillar.heavenlyStem.name,
                     ),
-                    TopCircleOnly(chart: widget.userData.baziChart),
-                    Center(
-                      child: personalElementText(
-                          context,
-                          widget
-                              .userData.baziChart.dayPillar.heavenlyStem.name),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => GuestHoraScreen(
-                              name: widget.userData.name,
-                              birthDate:
-                                  widget.userData.birthDate.split(" ")[0],
-                              birthTime:
-                                  widget.userData.birthDate.split(" ")[1],
-                              gender: widget.userData.gender,
-                            ),
-                            settings:
-                                RouteSettings(arguments: {'from': 'member'}),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => GuestHoraScreen(
+                            name: widget.userData.name,
+                            birthDate: widget.userData.birthDate.split(" ")[0],
+                            birthTime: widget.userData.birthDate.split(" ")[1],
+                            gender: widget.userData.gender,
                           ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).primaryColor,
-                        foregroundColor: Colors.white,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(9),
+                          settings: RouteSettings(
+                            arguments: {'from': 'member'},
+                          ),
                         ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColor,
+                      foregroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 10,
                       ),
-                      child: Text(
-                        "อ่านผลการทำนายเต็มๆ",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall!
-                            .copyWith(color: Colors.white),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(9),
                       ),
                     ),
-                  ],
-                ))
+                    child: Text(
+                      "อ่านผลการทำนายเต็มๆ",
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodySmall!.copyWith(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

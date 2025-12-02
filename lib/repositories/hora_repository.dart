@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import '../models/basehora_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,17 +23,11 @@ class HoraRepository {
     String monthlyUri = '$apiUrl/horo_scope/';
     final dailyResponse = await http.get(
       Uri.parse(dailyUri),
-      headers: {
-        "Authorization": "$tk",
-        "Content-Type": "application/json",
-      },
+      headers: {"Authorization": "$tk", "Content-Type": "application/json"},
     );
     final monthlyResponse = await http.get(
       Uri.parse(monthlyUri),
-      headers: {
-        "Authorization": "$tk",
-        "Content-Type": "application/json",
-      },
+      headers: {"Authorization": "$tk", "Content-Type": "application/json"},
     );
     final calendarData = await getCalendarData(DateTime.now().month);
     String todayStatus = "";
@@ -63,13 +58,11 @@ class HoraRepository {
 
     final response = await http.get(
       Uri.parse(uri),
-      headers: {
-        "Authorization": "$tk",
-        "Content-Type": "application/json",
-      },
+      headers: {"Authorization": "$tk", "Content-Type": "application/json"},
     );
-    print(
-        "Calendar API GOT Code: ${response.statusCode}, Body: ${response.body}");
+    log(
+      "Calendar API GOT Code: ${response.statusCode}, Body: ${response.body}",
+    );
     if (response.statusCode != 200) {
       return {};
     } else {
@@ -82,10 +75,7 @@ class HoraRepository {
       respDate['bad'].forEach((element) {
         badDate.add(int.parse(element["date"].split("-")[2]));
       });
-      return {
-        "goodDate": goodDate,
-        "badDate": badDate,
-      };
+      return {"goodDate": goodDate, "badDate": badDate};
     }
   }
 }

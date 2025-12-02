@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:bazi_app_frontend/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,10 +16,7 @@ class UserDataRepository {
     //print("Token: $tk");
     final response = await http.post(
       Uri.parse('$apiUrl/auth/'),
-      headers: {
-        "Authorization": "$tk",
-        "Content-Type": "application/json",
-      },
+      headers: {"Authorization": "$tk", "Content-Type": "application/json"},
       body: "{}",
     );
     //print("Code: ${response.statusCode}, Body: ${response.body}");
@@ -33,21 +31,22 @@ class UserDataRepository {
   }
 
   // HANDLE FIRST TIME USER DATA INSERTION \\
-  Future<void> registerUser(String appDisplayName, String birthDate,
-      String birthTime, int gender) async {
+  Future<void> registerUser(
+    String appDisplayName,
+    String birthDate,
+    String birthTime,
+    int gender,
+  ) async {
     final String? tk = await user.getIdToken();
     final request = {
       "name": appDisplayName,
       "birth_date": "$birthDate $birthTime",
       "gender": gender,
     };
-    print("PUT Request: $request");
+    log("PUT Request: $request");
     final sth = await http.put(
       Uri.parse('$apiUrl/users/'),
-      headers: {
-        "Authorization": "$tk",
-        "Content-Type": "application/json",
-      },
+      headers: {"Authorization": "$tk", "Content-Type": "application/json"},
       body: jsonEncode(request),
     );
     if (sth.statusCode != 200) {
@@ -62,10 +61,7 @@ class UserDataRepository {
     final String? tk = await user.getIdToken();
     final response = await http.get(
       Uri.parse('$apiUrl/users/'),
-      headers: {
-        "Authorization": "$tk",
-        "Content-Type": "application/json",
-      },
+      headers: {"Authorization": "$tk", "Content-Type": "application/json"},
     );
     //print("Code: ${response.statusCode}, Body: ${response.body}");
     if (response.statusCode == 200) {

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -7,23 +9,23 @@ class AuthenticationRepository {
   // HANDLE GOOGLE SIGN IN \\
   Future<UserCredential?> signInWithGoogle() async {
     try {
-      final googleUser = await GoogleSignIn().signIn();
-      final googleAuth = await googleUser!.authentication;
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-      
-      return await auth.signInWithCredential(credential);
+      // final googleUser = await GoogleSignIn.instance.authenticate();
+      // final googleAuth = await googleUser.authentication;
+      // final credential = GoogleAuthProvider.credential(
+      //   accessToken: googleAuth.accessToken,
+      //   idToken: googleAuth.idToken,
+      // );
+
+      // return await auth.signInWithCredential(credential);
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
     }
     return null;
   }
 
   // HANDLE SIGN OUT \\
   Future<void> signOut() async {
-    await GoogleSignIn().signOut();
+    await GoogleSignIn.instance.signOut();
     await auth.signOut();
   }
 }

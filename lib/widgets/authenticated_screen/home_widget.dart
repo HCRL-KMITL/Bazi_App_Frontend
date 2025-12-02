@@ -1,11 +1,11 @@
-import 'dart:math';
+import 'dart:developer';
+import 'dart:math' hide log;
 
 import 'package:bazi_app_frontend/configs/theme.dart';
 import 'package:bazi_app_frontend/constants/constants.dart';
 import 'package:bazi_app_frontend/models/user_model.dart';
 import 'package:bazi_app_frontend/repositories/authentication_repository.dart';
 import 'package:bazi_app_frontend/repositories/hora_repository.dart';
-import 'package:bazi_app_frontend/widgets/monthly_prediction_widget.dart';
 import 'package:bazi_app_frontend/widgets/today_hora_chart_widget.dart';
 import 'package:bazi_app_frontend/widgets/forecast_widget.dart';
 
@@ -13,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/uiw.dart';
 import 'package:intl/intl.dart';
-
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({required this.userData, super.key});
@@ -30,7 +29,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   Map<String, Iconify> dayStatusIcon = {
     "Good": const Iconify(Uiw.smile, size: 50),
     "Bad": const Iconify(Uiw.frown, size: 50),
-    "Neutral": const Iconify(Uiw.meh, size: 50)
+    "Neutral": const Iconify(Uiw.meh, size: 50),
   };
 
   @override
@@ -51,7 +50,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         bestTimeIndex.add(yam[i + 1]);
       }
     }
-    print("Today Hora: $horaToday");
+    log("Today Hora: $horaToday");
     if (!mounted) return; // ป้องกัน setState หลัง dispose
     setState(() {
       todayHora = horaToday;
@@ -80,9 +79,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                   todayHora.isEmpty
                       ? dayStatusIcon["Neutral"]!
                       : dayStatusIcon[todayHora["status"]]!,
-                  const SizedBox(
-                    width: 10,
-                  ),
+                  const SizedBox(width: 10),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -105,14 +102,19 @@ class _HomeWidgetState extends State<HomeWidget> {
                     iconSize: 30,
                     color: wColor,
                     style: ButtonStyle(
-                        shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10))),
-                        backgroundColor: WidgetStatePropertyAll(
-                            Theme.of(context).primaryColor)),
+                      shape: WidgetStatePropertyAll(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      backgroundColor: WidgetStatePropertyAll(
+                        Theme.of(context).primaryColor,
+                      ),
+                    ),
                     onPressed: () async {
                       await AuthenticationRepository().signOut();
                     },
-                    icon: const Icon(Icons.logout)
+                    icon: const Icon(Icons.logout),
                   ),
                 ],
               ),
@@ -139,7 +141,10 @@ class _HomeWidgetState extends State<HomeWidget> {
                   decoration: BoxDecoration(
                     color: Theme.of(context).disabledColor,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Theme.of(context).primaryColor, width: 2)
+                    border: Border.all(
+                      color: Theme.of(context).primaryColor,
+                      width: 2,
+                    ),
                   ),
                   width: MediaQuery.of(context).size.width * 0.9,
                   height: 180,
@@ -163,7 +168,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                     crossAxisSpacing: 10,
                     shrinkWrap: true, //เนื้อหาไม่เกินกรอบ
                     childAspectRatio: 1.9,
-                    physics: const NeverScrollableScrollPhysics(), //ป้องกันการ column ทับกัน
+                    physics:
+                        const NeverScrollableScrollPhysics(), //ป้องกันการ column ทับกัน
                     children: bestTime.map((time) {
                       return Container(
                         padding: const EdgeInsets.all(0),
@@ -174,12 +180,9 @@ class _HomeWidgetState extends State<HomeWidget> {
                         child: Center(
                           child: Text(
                             time!,
-                            style: const TextStyle(
-                              color: wColor,
-                              fontSize: 15
-                            ),
+                            style: const TextStyle(color: wColor, fontSize: 15),
                           ),
-                        )
+                        ),
                       );
                     }).toList(),
                   ),
@@ -188,14 +191,17 @@ class _HomeWidgetState extends State<HomeWidget> {
               const SizedBox(height: 20),
               Row(
                 children: [
-                  Text("สีประจำวัน ",
-                      style: Theme.of(context).textTheme.headlineSmall),
+                  Text(
+                    "สีประจำวัน ",
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
                   if (todayHora.containsKey("colors"))
                     ...((todayHora["colors"] as List)
                         .map(
                           (colorName) => Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 4.0), // Adjust spacing
+                              horizontal: 4.0,
+                            ), // Adjust spacing
                             child:
                                 colorDisplaying[colorName] ?? const SizedBox(),
                           ),
@@ -204,7 +210,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                 ],
               ),
               const SizedBox(height: 15),
-              ForecastTabs(todayHora: todayHora)
+              ForecastTabs(todayHora: todayHora),
             ],
           ),
         ),
